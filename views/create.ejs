@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <%- include('./component/head.ejs')%>
+  <body>
+    
+    <%- include('./component/nav.ejs')%>
+    <div class="create-order">
+        <form action="/ordertable/create" method="POST">
+          <!-- Customer Information -->
+          <label for="customerName">Customer Name:</label>
+          <input type="text" id="customer_name" name="customerName" required>
+          
+          <label for="phoneNumber">Phone Number:</label>
+          <input type="text" id="contact_info" name="phoneNumber" required>
+          
+          <label for="membershipID">Email:</label>
+          <input type="text" id="membership_id" name="membershipID" required>
+          
+          <!-- Product Information -->
+          <label for="productName">Product Name:</label>
+          <input type="text" id="product_name" name="productName" required>
+          
+          <button type="submit">Submit</button>
+        </form>
+    </div>
+    
+    <%- include('./component/footer.ejs')%>
+  </body>
+</html>

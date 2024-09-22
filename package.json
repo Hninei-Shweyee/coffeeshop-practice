@@ -1,16 +1,30 @@
 {
-  "name": "mysqlapi",
-  "version": "0.0.0",
-  "private": true,
+  "name": "coffeeshopcurd",
+  "version": "1.0.0",
+  "description": "database sql project ",
+  "main": "app.js",
   "scripts": {
-    "start": "node ./bin/www"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aye-nyeinSan/PetDataBaseCURD.git"
+  },
+  "author": "Hnin Ei Shwe Yee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aye-nyeinSan/PetDataBaseCURD/issues"
+  },
+  "homepage": "https://github.com/aye-nyeinSan/PetDataBaseCURD#readme",
   "dependencies": {
-    "axios": "^1.7.7",
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "express": "^4.21.0",
-    "morgan": "~1.9.1",
-    "mysql": "^2.18.1"
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "method-override": "^3.0.0",
+    "mysql2": "^3.9.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }

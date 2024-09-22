@@ -1,23 +1,35 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-const connectionPool=require('./database/connectionPool');
 
-var indexRouter = require('./routes/index');
-var customerRouter = require('./routes/customer');
+const express = require ("express");
+const bodyParser = require ("body-parser");
+const qbRoutes = require("./routes/qb");
 
-var app = express();
+const app = express();
 
-connectionPool.init();
+//adding middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(qbRoutes);
+app.set('view engine','ejs');
+//incoming req as strings or arrays
+app.use(express.urlencoded({extended:true}));//posting data to server (req.body)
+app.use(express.static('views')); //for UI
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/customer', customerRouter);
+app.get("/ordertable/",(req,res)=>{
+  res.render('index',{title:'Orders 🧑💘',ordertable: res});
+});
 
-module.exports = app;
+app.get("/",(req,res)=>{
+    res.redirect('/ordertable/');
+  });
+  
+
+app.get("/bill/searchOrderId/",(req,res)=>{
+  res.render('orderSearch',{ title:'Order 💰 ',bill:res});
+})
+
+app.use((req,res) => {
+    res.status(404);
+    res.render('404',{ title:'404'});
+ })
+app.listen(4000);

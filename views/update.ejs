@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <%- include('./component/head.ejs')%>
+  <body>
+    
+    <%- include('./component/nav.ejs')%>
+    <div class="create-blog ">
+  
+      <form action="/ordertable/<%= order_table[0].order_id %>?_method=PUT " method="POST">
+        <label for="changeCustomerName">Change Customer Name:</label>
+        <input type="text" id="customer_name" name="customerName" value="<%= order_table[0].customer_name %>" required>
+        
+        <label for="changePhoneNumber">Change Phone Number:</label>
+        <input type="text" id="contact_info" name="phoneNumber" value="<%= order_table[0].contact_info%>" required>
+
+        <!-- Update Product Information -->
+        <label for="changeProductName">Change Product Name:</label>
+        <input type="text" id="product_name" name="productName" value="<%= order_table[0].product_name %>" required>
+               
+        <button><a class="update" data-doc="<%=order-table[0].order_id%>" > Update</a></button>
+       
+        </form> 
+
+
+    </div>
+    
+
+    <%- include('./component/footer.ejs')%>
+  </body>
+  <script>
+    const updatepost=document.querySelector("a.update");
+   
+    updatepost.addEventListener('click',(e)=>{
+      const updatebutt=`/ordertable/${updatepost.dataset.doc}`;
+    fetch(updatebutt ,  {
+      method:'PUT',
+     
+    })
+    .then((res)=>{return res.json({redirect:`/appointments/`})})
+     
+      .catch((err)=>{console.log(err);})
+
+})
+
+    </script>
+</html>

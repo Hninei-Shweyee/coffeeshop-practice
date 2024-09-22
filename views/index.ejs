@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <%- include('./component/head.ejs')%>
+  <body>
+    <%- include('./component/nav.ejs')%>
+    <h1>All Orders</h1>
+    <div class="blogs content">
+      <% if(ordertable.length > 0){ %>
+        <table class="order-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer Name</th>
+              <th>Product Name</th>
+              <th>Order Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% ordertable.forEach((order) => { %>
+              <tr>
+                <td><%= order.order_id %></td>
+                <td><%= order.customer_name %></td>
+                <td><%= order.product_name %></td>
+                <td><%= formatDate(order.order_date) %></td>
+                <td><a href="/ordertable/<%= order.order_id %>/update/">Update</a></td>
+                <td><a  href="/ordertable/delete/<%= order.order_id %>/" class="delete"  data-doc="<%= order.order_id> "> Delete</a></td>
+            
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <h2>There is nothing to display.</h2>
+      <% } %>
+    </div>
+    <%- include('./component/footer.ejs')%>
+    <style>
+      /* Add basic table styles for borders */
+      .appointments-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .appointments-table th, .appointments-table td {
+        border: 1px solid #2b2b2b;
+        padding: 8px;
+        text-align: left;
+      }
+    
+      .appointments-table th {
+        background-color: #f79494;
+      }
+    </style>
+    <% 
+      function formatDate(dateString) {
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-GB', options);
+      }
+     
+    %>
+
+  
+  </body>
+</html>

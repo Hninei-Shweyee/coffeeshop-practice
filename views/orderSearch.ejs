@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <%- include('./component/head.ejs')%>
+  <body>
+    
+    <%- include('./component/nav.ejs')%>
+    <div class="create-blog ">
+  
+      <form action="/bill/search/" method="get">
+        <label for="customerName"> Customer Name:</label>
+        <input type="text" id="title" name="customerName"  required>
+
+
+        <button><a class="search" data-doc="<%= bill.customerName %>" > Search</a></button>
+       
+        </form> 
+
+
+    </div>
+    
+
+    <%- include('./component/footer.ejs')%>
+  </body>
+  <script>
+   const searchForm = document.querySelector('a.search');
+searchForm.addEventListener('submit', (e) => {
+  e.preventDefault(); // Prevent the default form submission behavior
+  const customerName = document.getElementById('customerName').value;
+  const searchUrl = `/bill/search/?customerName=${encodeURIComponent(customerName)}`;
+  fetch(searchUrl ,{method:'GET'})
+    .then((response) => response.json()) // Assuming you expect JSON response
+    .then((data) => {
+      // Handle the response data here
+      console.log(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+    </script>
+ 
+</html>

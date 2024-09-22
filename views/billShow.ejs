@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <%- include('./component/head.ejs')%>
+  <body>
+    <%- include('./component/nav.ejs')%>
+    <h1>Bills</h1>
+    <div class="blogs content">
+      <% if(bill.length > 0){ %>
+        <table class="appointments-table">
+          <thead>
+            <tr>
+              <th>BillID</th>
+              <th>Customer Name</th>
+              <th>Total Price</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            <% bill.forEach((bil) => { %>
+              <tr>
+                <td><%= bil.billID %></td>
+                <td><%= bil.customerName %></td>
+                <td><%= bil.totalPrice %></td>
+            
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <h2>There is nothing to display.</h2>
+      <% } %>
+    </div>
+    <%- include('./component/footer.ejs')%>
+    <style>
+      /* Add basic table styles for borders */
+      .appointments-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .appointments-table th, .appointments-table td {
+        border: 1px solid #2b2b2b;
+        padding: 8px;
+        text-align: left;
+      }
+    
+      .appointments-table th {
+        background-color: #f79494;
+      }
+    </style>
+    <% 
+      function formatDate(dateString) {
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-GB', options);
+      }
+     
+    %>
+
+  
+  </body>
+</html>
