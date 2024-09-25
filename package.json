@@ -9,18 +9,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aye-nyeinSan/PetDataBaseCURD.git"
+    "url": "git+https://github.com/Hninei-Shweyee/coffeeshop-practice.git"
   },
   "author": "Hnin Ei Shwe Yee",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/aye-nyeinSan/PetDataBaseCURD/issues"
+    "url": "https://github.com/Hninei-Shweyee/coffeeshop-practice/issues"
   },
-  "homepage": "https://github.com/aye-nyeinSan/PetDataBaseCURD#readme",
+  "homepage": "https://github.com/Hninei-Shweyee/coffeeshop-practice#readme",
   "dependencies": {
     "body-parser": "^1.20.2",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "install": "^0.13.0",
     "method-override": "^3.0.0",
     "mysql2": "^3.9.4"
   },

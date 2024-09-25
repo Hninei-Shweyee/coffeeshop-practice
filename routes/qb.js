@@ -14,11 +14,12 @@ Router.get("/ordertable/delete/:id", (req, res) => {
     console.log("Order ID to delete:", orderId);
     try {
         const deleteOrderSQL = `
-            DELETE order_table, customer, product
+            DELETE order_table, customer
             FROM order_table
             LEFT JOIN customer ON order_table.customer_id = customer.customer_id
-            LEFT JOIN product ON order_table.product_id = product.product_id
             WHERE order_table.order_id = ?`;
+            // DELETE FROM order_table WHERE order_id = ?;
+            
         mysqlConnection.promise().query(deleteOrderSQL, [orderId]);
         res.redirect("/ordertable/");
     } catch (err) {
@@ -62,14 +63,20 @@ Router.get("/ordertable/", (req, res) => {
         SELECT
             order_table.order_id,
             customer.customer_name,
+            customer.contact_info,
             product.product_name,
+            order_table.quantity,
             order_table.order_date
+            
         FROM
             order_table
         INNER JOIN customer ON order_table.customer_id = customer.customer_id
-        INNER JOIN product ON order_table.product_id = product.product_id;`;
+        INNER JOIN product ON order_table.product_id = product.product_id 
+        ORDER BY order_table.order_id DESC;`;
     mysqlConnection.query(sql, (err, results, fields) => {
         if (!err) {
+            console.log('Result from ordertable route:',results);
+            
             res.render("index", { title: "Ordertable", ordertable: results });
         } else {
             res.status(404).json({ message: "Orders not found." });
@@ -89,7 +96,7 @@ Router.get("/ordertable/create/", (req, res) => {
 });
 
 Router.post("/ordertable/create/", async (req, res) => {
-    const { customerName, phoneNumber, productName, membershipID } = req.body;
+    const { customerName, phoneNumber, productName, membershipID ,newquantity} = req.body;
 
     const orderDate = new Date().toISOString().split("T")[0];
 
@@ -101,19 +108,35 @@ Router.post("/ordertable/create/", async (req, res) => {
 
         const customerID = customerResult.insertId;
         const [productRow] = await mysqlConnection.promise().query(
-            "SELECT product_id FROM product WHERE LOWER(product_name) = LOWER(?)",
+            "SELECT product_id FROM product WHERE product_name = lower(?)",
             [productName]
         );
+       // console.log("ProductRow: ",productRow);
+        
 
         if (productRow.length === 0) {
             res.json({ message: "Selected product not found" });
             return;
         }
 
-        const productID = productRow[0].productID;
+        const productID = productRow[0].product_id;
+       // console.log(productID)
 
-        const insertOrderSQL = "INSERT INTO order_table (customer_id, product_id, order_date) VALUES (?, ?, ?)";
-        const orderValues = [customerID, productID, orderDate];
+        // const update_mysql1= `
+        // UPDATE customer
+        // SET  product_id =${productID} 
+        // WHERE customer_id=${customerID};
+        // `;
+        // // const update_mysql2= `
+        // // UPDATE pet
+        // // SET  serviceID =${serviceID} 
+        // // WHERE petID =${petID};
+        // // `;
+        // await mysqlConnection.promise().query(update_mysql1,[productID]);
+        // // await mysqlConnection.promise().query(update_mysql2,[serviceID]);
+
+        const insertOrderSQL = "INSERT INTO order_table (customer_id, product_id, quantity,order_date) VALUES (?, ?, ?,?)";
+        const orderValues = [customerID, productID, newquantity,orderDate];
 
         const [orderResult] = await mysqlConnection.promise().query(insertOrderSQL, orderValues);
         console.log("Order created:", orderResult.insertId);
@@ -132,15 +155,17 @@ Router.get("/ordertable/:id/update", (req, res) => {
         SELECT
             order_id,
             customer.customer_name,
-            product.product_name
+            product.product_name,
+            quantity
         FROM
             order_table
         INNER JOIN customer ON order_table.customer_id = customer.customer_id
         INNER JOIN product ON order_table.product_id = product.product_id
         WHERE order_id = ${param_id};`;
+       
     mysqlConnection.query(sql, (err, results, fields) => {
         if (!err) {
-            res.render("update", { title: "Update Order", ordertable: results });
+            res.render("update", { title: "Update Order", order_table: results });
         } else {
             res.status(404).json({ message: "Order ID not found." });
             console.log(err);
@@ -151,7 +176,7 @@ Router.get("/ordertable/:id/update", (req, res) => {
 // PUT update order
 Router.put("/ordertable/:id", async (req, res) => {
     const orderId = req.params.id;
-    const { customerName, productName } = req.body;
+    const { customerName, productName ,newquantity} = req.body;
 
     try {
         const updateCustomerNameSQL = `
@@ -165,11 +190,16 @@ Router.put("/ordertable/:id", async (req, res) => {
             JOIN order_table AS o ON p.product_id = o.product_id
             SET p.product_name = ?
             WHERE o.order_id = ?`;
-
+            const updateQuantitySQL = `
+            UPDATE order_table
+            SET quantity = ?
+            WHERE order_id = ?`;
+        
         const [updateCustomerResult] = await mysqlConnection.promise().query(updateCustomerNameSQL, [customerName, orderId]);
         const [updateProductResult] = await mysqlConnection.promise().query(updateProductNameSQL, [productName, orderId]);
+        const [updateQuantityResult] = await mysqlConnection.promise().query(updateQuantitySQL, [newquantity, orderId]);
 
-        if (updateCustomerResult.affectedRows === 1 && updateProductResult.affectedRows === 1) {
+        if (updateCustomerResult.affectedRows === 1 && updateProductResult.affectedRows === 1 && updateQuantityResult.affectedRows===1) {
             res.redirect("/ordertable/");
         } else {
             res.json({ message: "Order not found" });

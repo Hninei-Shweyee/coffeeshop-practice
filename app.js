@@ -16,6 +16,7 @@ app.use(express.static('views')); //for UI
 
 
 app.get("/ordertable/",(req,res)=>{
+  console.log("Res from route",res);
   res.render('index',{title:'Orders 🧑💘',ordertable: res});
 });
 
@@ -32,4 +33,4 @@ app.use((req,res) => {
     res.status(404);
     res.render('404',{ title:'404'});
  })
-app.listen(4000);
+app.listen(5000);

@@ -5,26 +5,31 @@
     <%- include('./component/nav.ejs')%>
     <h1>All Orders</h1>
     <div class="blogs content">
-      <% if(ordertable.length > 0){ %>
-        <table class="order-table">
+      <%  console.log("Ordertable from frontend:", ordertable)
+      if(ordertable.length > 0){ %>
+        <table class="appointments-table">
           <thead>
             <tr>
               <th>Order ID</th>
+              <th>Order Date</th>
               <th>Customer Name</th>
               <th>Product Name</th>
-              <th>Order Date</th>
+              <th>Quantity</th>
+              <th>Phone Number</th>
             </tr>
           </thead>
           <tbody>
             <% ordertable.forEach((order) => { %>
               <tr>
                 <td><%= order.order_id %></td>
+                <td><%= formatDate(order.order_date) %></td>
                 <td><%= order.customer_name %></td>
                 <td><%= order.product_name %></td>
-                <td><%= formatDate(order.order_date) %></td>
+                <td><%= order.quantity %></td>
+                <td><%= order.contact_info %></td>
                 <td><a href="/ordertable/<%= order.order_id %>/update/">Update</a></td>
-                <td><a  href="/ordertable/delete/<%= order.order_id %>/" class="delete"  data-doc="<%= order.order_id> "> Delete</a></td>
-            
+                <td><a href="/ordertable/delete/<%= order.order_id %>/" class="delete"  data-doc="<%= order.order_id%> "> Delete</a></td>
+
               </tr>
             <% }); %>
           </tbody>
@@ -47,8 +52,9 @@
       }
     
       .appointments-table th {
-        background-color: #f79494;
+        background-color: lightgreen;
       }
+      
     </style>
     <% 
       function formatDate(dateString) {

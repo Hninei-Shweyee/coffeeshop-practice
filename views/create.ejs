@@ -4,26 +4,50 @@
   <body>
     
     <%- include('./component/nav.ejs')%>
-    <div class="create-order">
+    <div class="create-blog">
         <form action="/ordertable/create" method="POST">
           <!-- Customer Information -->
-          <label for="customerName">Customer Name:</label>
+          <label for="customerName"><b>Customer Name:</b></label>
           <input type="text" id="customer_name" name="customerName" required>
+
+          <!-- Product Information -->
+          <label for="productName"><b>Menu:</b>
+            <ul>
+              <li>Espresso</li>
+              <li>Latte</li>
+              <li>Cappuccino</li>
+              <li>Black Coffee</li>
+              <li>Muffin</li>
+              <li>Croissant</li>
+              <li>Bagel</li>
+              <li>Brownie</li>
+              <li>Iced Coffee</li>
+              <li>Smoothie</li>
+          </ul></label>
+          <input type="text" id="product_name" name="productName" required>
+
+          <label for="quantity"><b>Quantity:</b></label>
+          <input type="text" id="quantity" name="newquantity" required>
           
-          <label for="phoneNumber">Phone Number:</label>
+          <label for="phoneNumber"><b>Phone Number:</b></label>
           <input type="text" id="contact_info" name="phoneNumber" required>
           
-          <label for="membershipID">Email:</label>
-          <input type="text" id="membership_id" name="membershipID" required>
           
-          <!-- Product Information -->
-          <label for="productName">Product Name:</label>
-          <input type="text" id="product_name" name="productName" required>
-          
-          <button type="submit">Submit</button>
+          <button class="navg">Submit</button>
         </form>
     </div>
-    
+    <style>
+      li {
+            
+            margin: 5px 0;
+            padding: 2px;
+            
+        }
+        ul {
+            list-style-type: disc; 
+            padding-left: 20px; 
+        }
+    </style>
     <%- include('./component/footer.ejs')%>
   </body>
 </html>

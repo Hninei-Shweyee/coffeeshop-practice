@@ -7,17 +7,29 @@
     <div class="create-blog ">
   
       <form action="/ordertable/<%= order_table[0].order_id %>?_method=PUT " method="POST">
-        <label for="changeCustomerName">Change Customer Name:</label>
-        <input type="text" id="customer_name" name="customerName" value="<%= order_table[0].customer_name %>" required>
+        <label for="changeCustomerName"><b>Change Customer Name:</b></label>
+        <input type="text" id="title" name="customerName" value="<%= order_table[0].customer_name %>" required>
         
-        <label for="changePhoneNumber">Change Phone Number:</label>
-        <input type="text" id="contact_info" name="phoneNumber" value="<%= order_table[0].contact_info%>" required>
-
+        <label for="changeQuantity"><b>Change Quantity:</b></label>
+        <input type="text" id="title" name="newquantity" value="<%= order_table[0].quantity %>" required>
+        
         <!-- Update Product Information -->
-        <label for="changeProductName">Change Product Name:</label>
-        <input type="text" id="product_name" name="productName" value="<%= order_table[0].product_name %>" required>
+        <label for="changeProductName"><b>Change Menu:</b>
+          <ul>
+            <li>Espresso</li>
+            <li>Latte</li>
+            <li>Cappuccino</li>
+            <li>Black Coffee</li>
+            <li>Muffin</li>
+            <li>Croissant</li>
+            <li>Bagel</li>
+            <li>Brownie</li>
+            <li>Iced Coffee</li>
+            <li>Smoothie</li>
+        </ul></label>
+        <input type="text" id="title" name="productName" value="<%= order_table[0].product_name %>" required>
                
-        <button><a class="update" data-doc="<%=order-table[0].order_id%>" > Update</a></button>
+        <button class="navg"><a class="update" data-doc="<%=order_table[0].order_id%>" > Update</a></button>
        
         </form> 
 
@@ -36,7 +48,7 @@
       method:'PUT',
      
     })
-    .then((res)=>{return res.json({redirect:`/appointments/`})})
+    .then((res)=>{return res.json({redirect:`/ordertable/`})})
      
       .catch((err)=>{console.log(err);})
 
