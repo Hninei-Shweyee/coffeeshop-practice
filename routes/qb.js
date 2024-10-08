@@ -13,14 +13,18 @@ Router.get("/ordertable/delete/:id", (req, res) => {
     const orderId = req.params.id;
     console.log("Order ID to delete:", orderId);
     try {
+        const deletePaymentSQL=`
+        DELETE FROM payment WHERE order_id = ?;`;
         const deleteOrderSQL = `
             DELETE order_table, customer
             FROM order_table
             LEFT JOIN customer ON order_table.customer_id = customer.customer_id
-            WHERE order_table.order_id = ?`;
+            WHERE order_table.order_id = ?;`;
             // DELETE FROM order_table WHERE order_id = ?;
-            
+        
+        mysqlConnection.promise().query(deletePaymentSQL,[orderId]);
         mysqlConnection.promise().query(deleteOrderSQL, [orderId]);
+       
         res.redirect("/ordertable/");
     } catch (err) {
         console.error(err);
@@ -210,30 +214,68 @@ Router.put("/ordertable/:id", async (req, res) => {
     }
 });
 
-// Fetch all bills
-Router.get("/bill/all", (req, res) => {
-    mysqlConnection.query("SELECT * FROM bill", (err, results, fields) => {
-        if (!err) {
-            res.send(results);
-        } else {
-            res.status(404);
-            console.log(err);
-        }
-    });
-});
+// Router.get('/bill/all',(req, res) => {
 
-// Search for a bill by customer name
-Router.get("/bill/search/", (req, res) => {
-    const customername = req.query.customerName;
+//     mysqlConnection.query(
+//         "SELECT * FROM bill",
+//         (err,results,fields)=>{
+//            if(!err){
+//                res.send(results);
+//            } else{
+//                res.status(404);
+//                console.log(err);
+//            }
+
+//         }
+//    )
+// })
+
+// Router.get('/ordertable/searchOrder/',(req, res) => {
+//     const searchOrderID = req.query.orderId;
+//     mysqlConnection.query(
+//         ` select billID, customer.customerName,totalPrice from bill 
+//         inner join customer on customer.customerID= bill.customerID where customerName="${customername}"`,
+//         (err,results,fields)=>{
+//            if(!err){
+//             console.log(results);
+//             res.render('billShow',{title:'Bill 💰 ',bill:results});
+//            } else{
+//                res.status(404);
+//                console.log(err);
+//            }
+
+//         }
+//    )
+// })
+
+
+// Router.get("/searchOrder/showOrder/", (req, res) => {
+//     res.render("showOrder", { title: "Search Order ☕" });
+// });
+
+Router.get('/showOrder/', (req, res) => {
+    
+    const searchOrderID = req.query.orderId;
+     console.log(searchOrderID);
     mysqlConnection.query(
-        `SELECT billID, customer.customerName, totalPrice 
-        FROM bill 
-        INNER JOIN customer ON customer.customerID = bill.customerID 
-        WHERE customerName = "${customername}"`,
-        (err, results, fields) => {
+        `SELECT 
+           order_id, 
+           order_date, 
+           customer.customer_name, 
+           product.product_name, 
+           quantity, 
+            customer.contact_info 
+        FROM order_table
+        INNER JOIN customer ON order_table.customer_id = customer.customer_id
+        INNER JOIN product ON order_table.product_id = product.product_id
+        WHERE order_id ="${searchOrderID}"`,  // Use a parameterized query for safety
+         // Pass the orderId as a parameter
+        (err, results,fields) => {
             if (!err) {
-                console.log(results);
-                res.render("billShow", { title: "Bill 💰", bill: results });
+                 // Check if results are found
+                    console.log(results);
+                    res.render('showOrder', { title: 'Searching Order', searching: results });
+                
             } else {
                 res.status(404);
                 console.log(err);

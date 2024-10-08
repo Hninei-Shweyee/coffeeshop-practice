@@ -6,12 +6,14 @@
     <%- include('./component/nav.ejs')%>
     <div class="create-blog ">
   
-      <form action="/bill/search/" method="get">
-        <label for="customerName"> Customer Name:</label>
-        <input type="text" id="title" name="customerName"  required>
+      <form id="searchOrderForm" action="/showOrder/" method="get">
+        <label for="orderID"> Type Your Order ID:</label>
+        <input type="text" id="title" name="orderId"  required>
 
-
-        <button><a class="search" data-doc="<%= bill.customerName %>" > Search</a></button>
+        <button><a class="search" data-doc="<%= searching.orderId %>" > Search</a></button>
+        
+        <!-- <button type="submit">Search</button> -->
+       
        
         </form> 
 
@@ -25,8 +27,9 @@
    const searchForm = document.querySelector('a.search');
 searchForm.addEventListener('submit', (e) => {
   e.preventDefault(); // Prevent the default form submission behavior
-  const customerName = document.getElementById('customerName').value;
-  const searchUrl = `/bill/search/?customerName=${encodeURIComponent(customerName)}`;
+  const orderId = document.getElementById('order_id').value;
+  console.log(orderId);
+  const searchUrl = `/searchOrder/search/?orderId=${encodeURIComponent(orderId)}`;
   fetch(searchUrl ,{method:'GET'})
     .then((response) => response.json()) // Assuming you expect JSON response
     .then((data) => {
@@ -39,5 +42,5 @@ searchForm.addEventListener('submit', (e) => {
 });
 
     </script>
- 
+  
 </html>

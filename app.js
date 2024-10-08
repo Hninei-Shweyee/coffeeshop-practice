@@ -16,20 +16,22 @@ app.use(express.static('views')); //for UI
 
 
 app.get("/ordertable/",(req,res)=>{
-  console.log("Res from route",res);
+  // console.log("Res from route",res);
   res.render('index',{title:'Orders 🧑💘',ordertable: res});
 });
 
 app.get("/",(req,res)=>{
     res.redirect('/ordertable/');
   });
+
+  app.get("/searchingOrder/",(req,res)=>{
+    
+    res.render('searchOrder',{ title:'Search Order 💰 ',searching:res});
+   
+  })
   
-
-app.get("/bill/searchOrderId/",(req,res)=>{
-  res.render('orderSearch',{ title:'Order 💰 ',bill:res});
-})
-
 app.use((req,res) => {
+    console.log("404");
     res.status(404);
     res.render('404',{ title:'404'});
  })
