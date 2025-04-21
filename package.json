@@ -19,6 +19,7 @@
   "homepage": "https://github.com/Hninei-Shweyee/coffeeshop-practice#readme",
   "dependencies": {
     "body-parser": "^1.20.2",
+    "dotenv": "^16.5.0",
     "ejs": "^3.1.9",
     "express": "^4.21.2",
     "install": "^0.13.0",

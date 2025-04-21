@@ -2,8 +2,10 @@
 const express = require ("express");
 const bodyParser = require ("body-parser");
 const qbRoutes = require("./routes/qb");
+const dbUser = process.env.DB_USER;
 
 const app = express();
+require('dotenv').config();
 
 //adding middleware
 app.use(bodyParser.json());
